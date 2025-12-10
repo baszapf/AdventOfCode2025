@@ -27,50 +27,33 @@ class batteryBank:
                     pos2 = number
 
         jol = pos1 * 10 + pos2
-        print(f"{self.numberArray} > {jol}")
+        print(f"V1: {self.numberArray} > {jol}")
         return jol
 
     def calculateJoltage2(self):
         jol = 0
         numberOfBatteries = 12
-        for index, number in enumerate(self.numberArrayReverse):
-            # wenn zahl nicht die 12-letzte und größer als die davor, dann nimm die
-            #prüfe ob welche zahl am größten ist.
+        selectedBatteries = [0] * numberOfBatteries
+        currentBattery = numberOfBatteries
+        pointer = 0
+        for index, batteries in enumerate(selectedBatteries):
+            for index2, number in enumerate(self.numberArray):
+                
+                if index2 < (len(self.numberArray)-numberOfBatteries+index+1):
+                    # print(f"index2={index2} number {number}")
+                    if index2 >= pointer:    
+                        if number > selectedBatteries[index]:
+                            selectedBatteries[index] = number
+                            pointer = index2+1
+                            # print(f"  index: {index} pointer: {pointer}")
+                    
+            # print("----------")
+        print(f"V2, Selected: {selectedBatteries}")
+
+        for index, batteries in enumerate(selectedBatteries):
+            jol += 10**(numberOfBatteries-index-1)*selectedBatteries[index]
         
-
-        #length = self.numberArray.length()
-
-
-        '''
-        pos1 = 0 #dezimalstelle
-        pos2 = 0
-        pos3 = 0
-
-        jol = 0
-        # length = self.numberArray.length()
-
-        for index, number in enumerate(self.numberArray):
-            if index == len(self.numberArray) - 2:
-                if pos2 < number:
-                    pos2 = number
-                    pos3 = 0
-            elif index == len(self.numberArray) - 1:
-                if pos3 < number:
-                    pos3 = number
-            else: 
-                if pos1 < number:
-                    pos1 = number
-                    pos2 = 0 # rest pos2 if 1 is set again
-                    pos3 = 0
-                elif pos2 < number:
-                    pos2 = number
-                    pos3 = 0
-                elif pos3 < number:
-                    pos3 = number
-
-        '''
-        #jol = pos1*100 + pos2*10 + pos3
-        print(f"{self.numberArray} > {jol}")
+        print(f"V2: {self.numberArray} > {jol}")
         return jol
 
     def getMaxJoltage1(self):
@@ -118,8 +101,8 @@ def process_file(file_path):
 
 
 start_time = time.perf_counter()
-# final_result1, final_result2 = process_file("input.txt")
-final_result1, final_result2  = process_file("input_demo.txt")
+final_result1, final_result2 = process_file("input.txt")
+# final_result1, final_result2  = process_file("input_demo.txt")
 end_time = time.perf_counter()
 print(f"Maximum Joltage Part 1: {final_result1}")
 print(f"Maximum Joltage Part 2: {final_result2}")
